@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# 其它
+*.log
