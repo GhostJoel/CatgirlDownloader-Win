@@ -31,18 +31,26 @@ class Preferences:
 
     def __init__(self):
         self.data = dict(DEFAULTS)
-        self.load()
+        self._load_or_init()
 
-    def load(self):
+    def _load_or_init(self):
+        """读取配置；文件不存在或损坏时，立即生成一份默认配置。"""
         try:
             with open(CONFIG_FILE, "r", encoding="utf-8") as f:
                 saved = json.load(f)
-            if isinstance(saved, dict):
-                for key, default in DEFAULTS.items():
-                    self.data[key] = saved.get(key, default)
+            if not isinstance(saved, dict):
+                raise ValueError("配置格式不正确")
         except (OSError, ValueError):
-            # 文件不存在或损坏：保持默认值即可
-            pass
+            # 首次运行（或文件损坏）：写出一份默认配置
+            self.save()
+            return
+        # 合并：保留文件中的已有值（含未知键），补齐缺失的默认键
+        merged = dict(saved)
+        for key, default in DEFAULTS.items():
+            merged.setdefault(key, default)
+        self.data = merged
+        if merged != saved:
+            self.save()  # 补过缺键，落盘规范化
 
     def save(self):
         try:
