@@ -1,5 +1,12 @@
 # Catgirl Downloader（Windows / Tkinter 版）
 
+[![Latest release](https://img.shields.io/github/v/release/GhostJoel/CatgirlDownloader-Win?label=release)](https://github.com/GhostJoel/CatgirlDownloader-Win/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/GhostJoel/CatgirlDownloader-Win/total)](https://github.com/GhostJoel/CatgirlDownloader-Win/releases)
+[![License: GPL-3.0](https://img.shields.io/github/license/GhostJoel/CatgirlDownloader-Win)](LICENSE)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+![Platform](https://img.shields.io/badge/platform-Windows-lightgrey)
+![GUI](https://img.shields.io/badge/GUI-Tkinter-orange)
+
 把 [NyarchLinux/CatgirlDownloader](https://github.com/NyarchLinux/CatgirlDownloader) 的功能
 搬到 Windows 上：从 **nekos.moe / waifu.im / danbooru** 随机抓一张图，显示、保存、可定时自动刷新。
 
