@@ -20,6 +20,7 @@ import queue
 import sys
 import threading
 import tkinter as tk
+import webbrowser
 from tkinter import filedialog, messagebox, ttk
 
 from PIL import Image, ImageTk
@@ -34,6 +35,10 @@ from sources import (
 )
 
 APP_TITLE = "Catgirl Downloader"
+APP_VERSION = "1.1.0"
+PROJECT_URL = "https://github.com/GhostJoel/CatgirlDownloader-Win"
+ORIGINAL_URL = "https://github.com/NyarchLinux/CatgirlDownloader"
+LICENSE_URL = "https://www.gnu.org/licenses/gpl-3.0.html"
 FALLBACK_W, FALLBACK_H = 900, 700
 PUMP_MS = 80  # 主线程轮询结果队列的间隔
 
@@ -136,6 +141,7 @@ class App:
         ttk.Label(bar, text="秒").pack(side="left", padx=(2, 6))
 
         ttk.Button(bar, text="设置", command=self.open_settings).pack(side="right")
+        ttk.Button(bar, text="关于", command=self.open_about).pack(side="right", padx=(0, 6))
 
         self.image_label = tk.Label(self.root, text="加载中…", anchor="center")
         self.image_label.pack(side="top", fill="both", expand=True)
@@ -373,6 +379,49 @@ class App:
         ttk.Button(btns, text="保存", command=save_close).pack(side="right")
 
         entry.focus_set()
+        win.grab_set()
+
+    def open_about(self):
+        win = tk.Toplevel(self.root)
+        win.title("关于 Catgirl Downloader")
+        win.transient(self.root)
+        win.resizable(False, False)
+
+        frm = ttk.Frame(win, padding=16)
+        frm.pack(fill="both", expand=True)
+
+        ttk.Label(
+            frm, text=f"\U0001F431 Catgirl Downloader（Windows 版）  v{APP_VERSION}",
+            font=("Segoe UI", 12, "bold"),
+        ).pack(anchor="w")
+        ttk.Label(
+            frm, text="从 nekos.moe / waifu.im / danbooru 随机抓取图片的轻量小工具。",
+            wraplength=440, justify="left",
+        ).pack(anchor="w", pady=(6, 0))
+        ttk.Label(
+            frm, text="基于 NyarchLinux/CatgirlDownloader 的非官方 Windows 移植版。",
+            wraplength=440, justify="left", foreground="#666666",
+        ).pack(anchor="w")
+
+        ttk.Separator(frm).pack(fill="x", pady=10)
+
+        legal = (
+            "本程序是自由软件：你可以依据 GNU 通用公共许可证（GPL）第 3 版"
+            "（或你选择的任何更新版本）的条款，重新发布和/或修改它。\n\n"
+            "本程序发布时希望有用，但不提供任何担保（NO WARRANTY），"
+            "甚至不包括适销性或特定用途适用性的默示担保。\n\n"
+            "\u00a9 2026 MoRan　　原项目 \u00a9 2026 SilverOS"
+        )
+        ttk.Label(frm, text=legal, wraplength=440, justify="left").pack(anchor="w")
+
+        links = ttk.Frame(frm)
+        links.pack(anchor="w", pady=(12, 0))
+        ttk.Button(links, text="项目主页", command=lambda: webbrowser.open(PROJECT_URL)).pack(side="left")
+        ttk.Button(links, text="原项目", command=lambda: webbrowser.open(ORIGINAL_URL)).pack(side="left", padx=8)
+        ttk.Button(links, text="GPL 许可证全文", command=lambda: webbrowser.open(LICENSE_URL)).pack(side="left")
+
+        ttk.Button(frm, text="关闭", command=win.destroy).pack(anchor="e", pady=(14, 0))
+        win.bind("<Escape>", lambda _e: win.destroy())
         win.grab_set()
 
     def _on_close(self):
